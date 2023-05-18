@@ -3,7 +3,7 @@ export function setTaskData(currentWeek) {
   const endTime = 21;
   const timeSlots = endTime - startTime + 1;
 
-	// [time, date]
+  // [time, date]
   let tasks = [
     [9, 30],
     [13, 25],
@@ -24,6 +24,7 @@ export function setTaskData(currentWeek) {
       {
         timeStamp: true,
         task: false,
+        selected: false,
         time: startTime + i,
         date: null,
       },
@@ -32,6 +33,7 @@ export function setTaskData(currentWeek) {
       hourData.push({
         timeStamp: false,
         task: false,
+        selected: false,
         time: startTime + i,
         date: currentWeek[d].date,
       });
@@ -53,6 +55,5 @@ export function setTaskData(currentWeek) {
     }
     taskData[taskTimeIndex][taskDateIndex].task = true;
   }
-	console.log("🚀 ~ file: setTaskData.js:55 ~ setTaskData ~ taskData:", taskData)
   return taskData;
 }

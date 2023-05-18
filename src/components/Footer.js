@@ -29,6 +29,7 @@ const Wrapper = styled.div`
     border: none;
     background: #f6f6f6;
     color: #ff3131;
+		cursor: pointer;
   }
 
   .show {

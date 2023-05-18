@@ -1,59 +1,41 @@
 import React, { useState } from "react";
+import { styled } from "styled-components";
 import Footer from "./Footer";
 
 export default function Calendar({ taskData }) {
   const [isTaskSelected, setTaskSelected] = useState(false);
-  const [taskBackground, setTaskBackground] = useState("#ebecff");
-  let setDate = 0;
-  let setTime = 0;
 
-  const handleClick = (setDate, setTime) => {
-    console.log("🚀 ~ file: Calendar.js:9 ~ handleClick ~ setTime:", setTime);
-    console.log("🚀 ~ file: Calendar.js:9 ~ handleClick ~ setDate:", setDate);
+  const handleClick = () => {
+    if (isTaskSelected) {
+      clearAllSelected();
+    }
     setTaskSelected(!isTaskSelected);
-
-    // if (isTaskSelected) {
-    //   setTaskBackground("#b3b7ff");
-    //   console.log(
-    //     "🚀 ~ file: Calendar.js:7 ~ Calendar ~ taskBackground:",
-    //     taskBackground
-    //   );
-    // } else {
-    //   setTaskBackground("#ebecff");
-    //   console.log(
-    //     "🚀 ~ file: Calendar.js:7 ~ Calendar ~ taskBackground:",
-    //     taskBackground
-    //   );
-    // }
-    // console.log("Task selected: " + isTaskSelected);
   };
+
+  function clearAllSelected() {
+    taskData.map((item) =>
+      item.map((el, idx) => {
+        return (el.selected = false);
+      })
+    );
+  }
+
+  function padZero(x) {
+    return x < 10 ? "0" + x + ":00" : x + ":00";
+  }
+
   return (
-    <>
-      <div
-        style={{
-          height: "555px",
-          top: "-15px",
-          zIndex: "0",
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(8, minmax(8px, 1fr))",
-            margin: "0",
-          }}
-        >
-          {taskData.map((item, index) =>
+    <Wrapper>
+      <div className="container">
+        <div className="grid-8">
+          {taskData.map((item) =>
             item.map((el, idx) => {
               return (
-                // <div style={{ boxShadow: "0 0 0 1px gray, 0 0 0 2px white" }}>
                 <div
                   key={idx}
                   style={{
                     cursor: el.timeStamp || !el.task ? "default" : "pointer",
                     backgroundColor: el.task ? "#ebecff" : "",
-                    //backgroundColor: el.task && isTaskSelected ? taskBackground : "#fff",
                     padding: "2px",
                     paddingRight: el.timeStamp ? "0" : "2px",
                     borderBottom: el.timeStamp ? "none" : "1px solid lightgray",
@@ -62,65 +44,67 @@ export default function Calendar({ taskData }) {
                         ? "none"
                         : "1px solid lightgray",
                   }}
-                  // onClick={() => {
-                  // 	if (el.task) {
-                  // 		const setDate = el.date
-                  // 		const setTime = el.time
-                  // 		handleClick(setDate, setTime)
-                  // 		console.log(el.task)
-                  // 	}
-                  //   el.task && handleClick();
-                  //   el.task
-                  //     ? console.log("Date: " + el.date + " Time: " + el.time)
-                  //     : console.log("No task");
-                  // }}
                 >
                   <div
-                    style={{
-                      background:
-                        el.task &&
-                        setDate === el.date &&
-                        setTime === el.time &&
-                        isTaskSelected
-                          ? "#b3b7ff"
-                          : "",
-                      padding: "8px",
-                    }}
+                    className={`task ${
+                      el.selected && isTaskSelected ? "selected" : ""
+                    }`}
                     onClick={() => {
                       if (el.task) {
-                        setDate = el.date;
-                        setTime = el.time;
-                        handleClick(setDate, setTime);
-                        console.log(el.task);
+                        el.selected = !isTaskSelected;
+                        handleClick();
                       }
-                      el.task && handleClick();
-                      el.task
-                        ? console.log("Date: " + el.date + " Time: " + el.time)
-                        : console.log("No task");
                     }}
                   >
                     <span
-                      style={{
-                        fontSize: "18px",
-                        fontWeight: "500",
-                        padding: "15px",
-                        paddingRight: el.timeStamp ? "0" : "10px",
-                        top: "22px",
-                        position: "relative",
-                        color: "#c0c0c0",
-                      }}
+                      className={`time-stamp ${
+                        el.timeStamp ? "pr-0" : "pr-10"
+                      }`}
                     >
-                      {el.timeStamp ? el.time + ":00" : ""}
+                      {el.timeStamp ? padZero(el.time) : ""}
                     </span>
                   </div>
                 </div>
-                // </div>
               );
             })
           )}
         </div>
       </div>
       <Footer isTaskSelected={isTaskSelected} />
-    </>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  .container {
+    height: 555px;
+    top: -15px;
+    z-index: 0;
+    position: relative;
+  }
+  .grid-8 {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(8px, 1fr));
+    margin: 0;
+  }
+  .task {
+    padding: 8px;
+  }
+  .selected {
+    background-color: #b3b7ff;
+  }
+  .time-stamp {
+    font-size: 18px;
+    font-weight: 500;
+    padding: 15px;
+    top: 22px;
+    position: relative;
+    color: #c0c0c0;
+  }
+  .pr-0 {
+    padding-right: 0;
+  }
+  .pr-10 {
+    padding-right: 10px;
+  }
+`;
