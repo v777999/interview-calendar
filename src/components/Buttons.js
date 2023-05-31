@@ -132,9 +132,8 @@ const Wrapper = styled.div`
     margin: 0 auto;
     height: auto;
     max-height: 70vh;
-    /* margin-top: 15%; */
     max-width: 600px;
-    margin-top: calc(100vh - 65vh - 20px);
+    margin-top: 30vh;
     background: #e6e6e7;
     border-radius: 20px;
     padding: 20px 0 0;
@@ -190,7 +189,7 @@ const Wrapper = styled.div`
   .input-field {
     margin-top: 30px;
     font-size: 20px;
-    caret-color: #007aff;
+    //caret-color: #007aff;
     font-weight: 600;
   }
 
